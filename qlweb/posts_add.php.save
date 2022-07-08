@@ -1,0 +1,131 @@
+<!DOCTYPE html>  
+<html>
+<head>
+<title>Add posts</title>
+        <style>
+		
+		.content{
+  overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 3; 
+   line-height: 1.4em;       
+   max-height: 4.2em;       
+}
+                table {
+                  font-family: arial, sans-serif;
+                  border-collapse: collapse;
+                  width: 100%;
+                }
+                td, th {
+                  border: 1px solid #dddddd;
+                  text-align: left;
+                  padding: 8px;
+                }
+
+                tr:nth-child(even) {
+                        background-color: #dddddd;
+                }
+        </style>
+</head>
+   
+<body>
+<form action="posts_add.php" enctype="multipart/form-data" method="post" class="form">
+        <table width="600" border="1" cellspacing="5" cellpadding="5">
+  <tr>
+    <td width="230">Title</td>
+    <td width="329"><input type="text" name="title"/></td>
+  </tr>
+    <tr>
+    <td>Content </td>
+    <td><textarea name="content" id="content" placeholder="Enter content..." class="tinymce" rows="10" cols="80"></textarea></td>
+  </tr>
+  <tr>
+    <td>Image</td>
+    <td><input type="hidden" name="size" value="1000000">
+        <input type="file" name="image" class="image"><br/><br/></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><input type="submit" name="submit" value="Save Data"/></td>
+  </tr>
+<br><br>
+</table>
+</form>
+<h2>Content in Database</h2>
+<table>
+<tr>
+<td>PostID</td>
+<td>Titile:</td>
+<td>Content:</td>
+<td>Image:</td>
+<td>Poster:</td>
+<td>Edit:</td>
+<td>Delete:</td>
+</tr></table>
+<?php
+    include 'config.php';
+    session_start();
+    $em = $_SESSION['email'];
+    $s="select * from infusers where email='".$em."'";
+    $q=mysqli_query($conn,$s);
+    $r=mysqli_fetch_array($q);
+    $id = $r['id'];
+    $sql="select * from posts";
+    $query=mysqli_query($conn,$sql);
+  
+if (isset($_POST['submit'])) {
+    $postid=$_GET['postid'];
+    $title = $_POST['title'];
+    $content = $_POST['content'];
+
+    $image = $_FILES['image']['name'];
+    $errors= array();
+    $file_name = $_FILES['image']['name'];
+    $file_size = $_FILES['image']['size'];
+    $file_tmp = $_FILES['image']['tmp_name'];
+    $file_type = $_FILES['image']['type'];
+    $file_ext=strtolower(end(explode('.',$_FILES['image']['name'])));
+           
+    $expensions= array("jpeg","jpg","png");
+           
+    if(in_array($file_ext,$expensions)=== false){
+        $errors[]="Chỉ hỗ trợ upload file JPEG hoặc PNG.";
+    }
+           
+    if($file_size > 2097152) {
+        $errors[]='Kích thước file không được lớn hơn 2MB';
+    }
+    while($row=mysqli_fetch_array($query))
+    {
+        if($content === $row['content'])
+        {
+            echo "This content already exists!";
+            exit();
+        }
+    }
+    $a = "INSERT INTO `posts` (`title`,`content`,`image`, `id`) VALUES ('$title','$content','$image','$id')";
+    $b = mysqli_query($conn, $a);
+    if(!$b || empty($errors)==false)
+    {
+        echo "Add post error!";
+    }else
+    {
+        echo "Add post success!";
+    }
+}
+    while ($row=mysqli_fetch_array($query)) {
+        echo "<table>";
+        echo "<tr>";
+        echo "<td><p>".$row['postid']."</p></td>";
+        echo "<td><h2>".$row['title']."</h2></td>";
+        echo "<td><p>".$row['content']."</p></td>";
+        echo "<td><img src='photo/".$row['image']."'height=100></td>";
+        echo "<td><p>".$row['id']."</p></td>";
+        echo '<td><a href="posts_edit.php?id='.$row['id'].'">Edit</a></td> | <td><a href="posts_delete.php?id='.$row['id'].'">Delete</a></td>';
+        echo "</tr>";
+        echo "</table>";
+    }
+?>
+</body>
+</html>

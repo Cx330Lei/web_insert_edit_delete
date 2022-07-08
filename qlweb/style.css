@@ -1,0 +1,73 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    background-image: linear-gradient(rgba(0,0,0,.5), rgba(52, 46, 115, 0.485)), url(https://topchiase24h.com/wp-content/uploads/2021/04/hinh-nen-mat-trang-moon-1.jpeg);
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 800px;
+    min-height: 500px;
+    background: #FFF;
+    border: 3px solid  #0e8ded;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0,0,0,.3);
+    padding: 30px 30px;
+}
+
+.container .login-text {
+    color: #36ceed;
+    font-weight: 300;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 60px;
+    display: block;
+    text-transform: capitalize;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container .login-email .input-group{
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.container .login-email .input-group input {
+    width: 400px;
+    height: 50px;
+    font-weight: 100;
+    font-size: 1rem;
+    border-radius: 10px;
+}
+
+.container .login-email .input-group button {
+    width: 400px;
+    height: 50px;
+    font-weight: 300;
+    font-size: 1.2rem;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    color: #0e33ef;
+    border-radius: 10px;
+    transition: .3s;
+    cursor: pointer;
+}
+.login-register-text {
+    color: #111;
+    font-weight: 600;
+}
+
+.login-register-text a {
+    text-decoration: none;
+    color: #0e33ef;
+}
